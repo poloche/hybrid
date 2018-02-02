@@ -60,7 +60,7 @@
 *	Minimize button
 */
 .decoration-button-minimize{
-    -fx-background-radius: 0;
+    -fx-background-radius: 3;
     -fx-border-style: null;
     -fx-background-color: null;
     -fx-background-image:url("./minimize.png");
@@ -68,8 +68,9 @@
 }
 
 .decoration-button-minimize:hover{
-    -fx-background-color: null;
+    -fx-background-color: red;
     -fx-background-image:url("./minimize-hover.png");
+    -fx-background-position: center;
     -fx-background-repeat:no-repeat;
 }
 /*

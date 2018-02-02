@@ -31,16 +31,20 @@ import insidefx.ibreed.JavaScriptBridge;
 import insidefx.ibreed.WebViewInjector;
 import insidefx.undecorator.Undecorator;
 import insidefx.undecorator.UndecoratorScene;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.FadeTransitionBuilder;
 import javafx.application.Application;
+
 import static javafx.application.Application.launch;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -104,7 +108,7 @@ public class IBreed extends Application {
         undecoratorScene = new UndecoratorScene(stage, root);
         undecoratorScene.setFadeInTransition();
         setAsHybrid(stage);
-        stage.setTitle("ibreed");
+        stage.setTitle("hybrid application test");
         stage.setScene(undecoratorScene);
         stage.sizeToScene();
         stage.toFront();
@@ -154,14 +158,13 @@ public class IBreed extends Application {
                 if (fillTransition != null) {
                     fillTransition.playFromStart();
                 } else {
-                    fillTransition = FadeTransitionBuilder.create()
-                            .node(keyUp)
-                            .duration(Duration.millis(150))
-                            .cycleCount(2)
-                            .fromValue(0.2)
-                            .toValue(1)
-                            .autoReverse(true)
-                            .build();
+                    fillTransition = new FadeTransition();
+                    fillTransition.setNode(keyUp);
+                    fillTransition.setDuration(Duration.millis(150));
+                    fillTransition.setCycleCount(2);
+                    fillTransition.setFromValue(0.2);
+                    fillTransition.setToValue(1);
+                    fillTransition.setAutoReverse(true);
                     fillTransition.play();
                 }
             }
@@ -184,19 +187,19 @@ public class IBreed extends Application {
         // Reflect the current URL in the text field
         webView.getEngine().getLoadWorker().stateProperty().addListener(
                 new ChangeListener<Worker.State>() {
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> ov,
-                    Worker.State oldState, Worker.State newState) {
-                if (newState == Worker.State.SUCCEEDED) {
-                    urlTxt.setText(webView.getEngine().getLocation());
-                    urlTxt.setStyle("-fx-background-color:white;;-fx-border-color: #bababa;-fx-border-width: 2px;-fx-border-style: solid;");
-                    // urlTxt.setStyle("-fx-background-color:white;");
-                } else if (newState == Worker.State.FAILED) {
-                    urlTxt.setStyle("-fx-background-color:red;");
-                    LOGGER.log(Level.SEVERE, "Error while loading: ", url);
-                }
-            }
-        });
+                    @Override
+                    public void changed(ObservableValue<? extends Worker.State> ov,
+                                        Worker.State oldState, Worker.State newState) {
+                        if (newState == Worker.State.SUCCEEDED) {
+                            urlTxt.setText(webView.getEngine().getLocation());
+                            urlTxt.setStyle("-fx-background-color:white;;-fx-border-color: #bababa;-fx-border-width: 2px;-fx-border-style: solid;");
+                            // urlTxt.setStyle("-fx-background-color:white;");
+                        } else if (newState == Worker.State.FAILED) {
+                            urlTxt.setStyle("-fx-background-color:red;");
+                            LOGGER.log(Level.SEVERE, "Error while loading: ", url);
+                        }
+                    }
+                });
 
         // Manage URL Textfield visibility
         urlTxt.setOpacity(0);
@@ -204,17 +207,17 @@ public class IBreed extends Application {
         urlTxt.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-                if(fadeOutTransition!=null){
+                if (fadeOutTransition != null) {
                     fadeOutTransition.stop();
                 }
-                FadeTransition fadeInTransition = FadeTransitionBuilder.create()
-                        .duration(Duration.millis(200))
-                        .node(urlTxt)
-                        .fromValue(urlTxt.getOpacity())
-                        .toValue(1)
-                        .cycleCount(1)
-                        .autoReverse(false)
-                        .build();
+                FadeTransition fadeInTransition = new FadeTransition();
+                fadeInTransition.setDuration(Duration.millis(200));
+                fadeInTransition.setNode(urlTxt);
+                fadeInTransition.setFromValue(urlTxt.getOpacity());
+                fadeInTransition.setToValue(1);
+                fadeInTransition.setCycleCount(1);
+                fadeInTransition.setAutoReverse(false);
+
                 fadeInTransition.play();
             }
         });
@@ -223,14 +226,14 @@ public class IBreed extends Application {
             public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean focused) {
                 // Hide on focus lost
                 if (!focused) {
-                    FadeTransition fadeOutTransition = FadeTransitionBuilder.create()
-                            .duration(Duration.millis(600))
-                            .node(urlTxt)
-                            .fromValue(urlTxt.getOpacity())
-                            .toValue(0)
-                            .cycleCount(1)
-                            .autoReverse(false)
-                            .build();
+                    FadeTransition fadeOutTransition = new FadeTransition();
+                    fadeOutTransition.setDuration(Duration.millis(600));
+                    fadeOutTransition.setNode(urlTxt);
+                    fadeOutTransition.setFromValue(urlTxt.getOpacity());
+                    fadeOutTransition.setToValue(0);
+                    fadeOutTransition.setCycleCount(1);
+                    fadeOutTransition.setAutoReverse(false);
+
                     fadeOutTransition.play();
                 }
             }
@@ -241,14 +244,14 @@ public class IBreed extends Application {
             @Override
             public void handle(MouseEvent t) {
                 if (!urlTxt.focusedProperty().get()) {
-                    fadeOutTransition = FadeTransitionBuilder.create()
-                            .duration(Duration.millis(600))
-                            .node(urlTxt)
-                            .fromValue(urlTxt.getOpacity())
-                            .toValue(0)
-                            .cycleCount(1)
-                            .autoReverse(false)
-                            .build();
+                    fadeOutTransition = new FadeTransition();
+                    fadeOutTransition.setDuration(Duration.millis(600));
+                    fadeOutTransition.setNode(urlTxt);
+                    fadeOutTransition.setFromValue(urlTxt.getOpacity());
+                    fadeOutTransition.setToValue(0);
+                    fadeOutTransition.setCycleCount(1);
+                    fadeOutTransition.setAutoReverse(false);
+
                     fadeOutTransition.play();
                 }
             }
@@ -300,6 +303,7 @@ public class IBreed extends Application {
     private void handleDragDropped(DragEvent event) {
         dragMeFX.setOpacity(1); // Remove drag effect
     }
+
     @FXML
     private void handleDragDone(DragEvent event) {
         dragMeFX.setOpacity(1); // Remove drag effect
